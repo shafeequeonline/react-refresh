@@ -1,19 +1,6 @@
-.title {
-  text-align: center;
-}
-
 th {
   text-align: left;
   font-size: x-large;
-}
-
-input {
-  width: 100%;
-  font-size: large;
-  padding: 10px;
-  border: 3px solid #bbb;
-  border-radius: 10px;
-  margin-bottom: 15px;
 }
 
 button {

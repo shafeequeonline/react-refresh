@@ -1,7 +1,7 @@
 import "./App.css";
-import pokemon from "./pokemon.json";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
+import styled from "@emotion/styled";
 
 const PokemonRow = ({ pokemon, onSelect }) => (
   <tr key={pokemon.id}>
@@ -53,24 +53,53 @@ PokemonInfo.prototype = {
   }),
 };
 
+const Title = styled.h1`
+  text-align: center;
+`;
+
+const TwoColumnLayout = styled.div`
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 1rem;
+`;
+
+const Container = styled.div`
+  width: 800px;
+  margin: auto;
+  padding-top: 1rem;
+`;
+
+const InputField = styled.input`
+  width: 100%;
+  font-size: large;
+  padding: 10px;
+  border: 3px solid #bbb;
+  border-radius: 10px;
+  margin-bottom: 15px;
+`;
+
 function App() {
   const [filter, setFilter] = React.useState("");
   const [selectedItem, setSelectedItem] = React.useState(null);
+  const [pokemon, setPokemon] = useState([]);
+
+  React.useEffect(() => {
+    fetch("http://localhost:3000/react-refresh/pokemon.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setPokemon(data);
+      });
+  }, []);
   return (
-    <div
-      style={{
-        width: 800,
-        margin: "auto",
-        paddingTop: "1rem",
-      }}
-    >
-      <h1 className="title">Pokemon Search</h1>
-      <input
+    <Container>
+      <Title className="title">Pokemon Search</Title>
+      <InputField
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
       />
-      <div>
+      <TwoColumnLayout>
         <div>
           <table width="100%">
             <thead>
@@ -95,13 +124,9 @@ function App() {
             </tbody>
           </table>
         </div>
-        {selectedItem && (
-          <div>
-            <PokemonInfo {...selectedItem}></PokemonInfo>
-          </div>
-        )}
-      </div>
-    </div>
+        {selectedItem && <PokemonInfo {...selectedItem}></PokemonInfo>}
+      </TwoColumnLayout>
+    </Container>
   );
 }
 
